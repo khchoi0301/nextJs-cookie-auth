@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { loginUser } from "../lib/auth";
-
+import Router from "next/router";
 
 export default class LoginForm extends Component {
 
@@ -17,7 +17,10 @@ export default class LoginForm extends Component {
         const { email, password } = this.state;
 
         event.preventDefault();
-        loginUser(email, password);
+        loginUser(email, password)
+            .then(() => {
+                Router.push("/profile");
+            })
     }
 
     render() {
@@ -29,14 +32,14 @@ export default class LoginForm extends Component {
                         name="email"
                         placeholder="email"
                         onChange={this.handleChange}
-                        value={this.state.email} />
+                        value={email} />
                 </div>
                 <div>
                     <input type="password"
                         name="password"
                         placeholder="password"
                         onChange={this.handleChange}
-                        value={this.state.password} />
+                        value={password} />
                 </div>
                 <button type="submit">Submit</button>
             </form>
