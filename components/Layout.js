@@ -1,19 +1,30 @@
 import Link from "next/link"
 
-const Layout = ({ title, children }) => (
-    <div className="root">
-        <nav className="navbar">
-            <span>Welcome,<string>Guest</string></span>
-            <div>
-                <Link href="/"><a>Home</a></Link>
-                <Link href="/profile"><a>Profile</a></Link>
-                <button>Logout</button>
-                <Link href="/login"><a>Login</a></Link>
-            </div>
-        </nav>
-        <h1>{title}</h1>
-        {children}
-        <style jsx>{`
+const Layout = ({ title, children, auth }) => {
+    const { user = {} } = auth || {};
+
+    return (
+        <div className="root">
+            <nav className="navbar">
+                <span>Welcome,<string>{user.name || "Guest"}</string></span>
+                <div>
+                    <Link href="/"><a>Home</a></Link>
+                    {user.email ? (
+                        //auth Navigation
+                        <>
+                            <Link href="/profile"><a>Profile</a></Link>
+                            <button>Logout</button>
+                        </>
+                    ) : (
+                            //unauth Navigation
+                            < Link href="/login"><a>Login</a></Link>
+                        )
+                    }
+                </div>
+            </nav>
+            <h1>{title}</h1>
+            {children}
+            <style jsx>{`
             .root {
                 display: flex;
                 align-items: center;
@@ -37,7 +48,8 @@ const Layout = ({ title, children }) => (
                 color: rgb(0, 0, 238);
             }
         `}</style>
-    </div>
-)
+        </div >
+    )
+}
 
 export default Layout;
